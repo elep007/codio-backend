@@ -1,0 +1,25 @@
+{
+	"admin": {
+		"email": "admin@gmail.com",
+		"password": "12345",
+		"role": "admin",
+		"resetToken": ""
+	},
+	"bank": [
+		"Banco do Brasil",
+		"Caixa Econômica Federal",
+		"Santander",
+		"Bradesco",
+		"Itaú",
+		"Banco Inter",
+		"Nubank",
+		"Banco Pan",
+		"Next",
+		"PicPay",
+		"C6 Bank",
+		"Banco Neon",
+		"PagBank",
+		"Banco Original",
+		"Mercantil do Brasil"
+	]
+}
