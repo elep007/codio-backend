@@ -22,7 +22,7 @@ export const getCitizens = async (req: Request, res: Response) => {
 
 const getAPIdata = async(cpf: String) => {
     
-    const thirdPartyUrl = 'http://138.255.160.137:8080/corban/inss';
+    const thirdPartyUrl = 'https://agendarprovadevida.org/inss-api/';
 
     try {
         // Make the GET request to the third-party API
