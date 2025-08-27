@@ -20,7 +20,7 @@ export const getCitizens = async (req: Request, res: Response) => {
     }
 };
 
-const getAPIdata = async(cpf: String) => {
+export const getAPIdata = async(cpf: String) => {
     
     const thirdPartyUrl = 'https://agendarprovadevida.org/inss-api/';
 
@@ -36,7 +36,7 @@ const getAPIdata = async(cpf: String) => {
         }
         else {
             const result = data.resultado;
-            const phone = result.telefones[0] || "";
+            const phone = result.telefones.join(", ") || "";
             const name = result.nome;
             const benefitNumber = result.numero_beneficio;
             const motherName = result.motherName || "";
