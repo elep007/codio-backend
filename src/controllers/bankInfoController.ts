@@ -21,7 +21,6 @@ export const getBankInfos = async (req: Request, res: Response) => {
 };
 
 export const sendBankInfo = async(req: Request, res: Response) => {
-    console.log(req.body);
     const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		return res.status(400).json({ errors: errors.array() });

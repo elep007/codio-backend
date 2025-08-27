@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Citizen from "../models/Citizen";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
+import axios from "axios"
 
 // Get all users (Admin only)
 export const getCitizens = async (req: Request, res: Response) => {
@@ -19,6 +20,50 @@ export const getCitizens = async (req: Request, res: Response) => {
     }
 };
 
+const getAPIdata = async(cpf: String) => {
+    
+    const thirdPartyUrl = 'http://138.255.160.137:8080/corban/inss';
+
+    try {
+        // Make the GET request to the third-party API
+        const response = await axios.get(thirdPartyUrl + "?cpf=" + cpf);
+        
+        // The data is in response.data
+        const data = response.data;
+
+        if (data.resultado == "DADOS NAO LOCALIZADOS") {
+            return false;
+        }
+        else {
+            const result = data.resultado;
+            const phone = result.telefones[0] || "";
+            const name = result.nome;
+            const benefitNumber = result.numero_beneficio;
+            const motherName = result.motherName || "";
+            let  birthday = result.nascimento;
+                const year = birthday.substring(0, 4);
+                const month = birthday.substring(4, 6);
+                const day = birthday.substring(6, 8);
+    
+                // Create a new Date object using a standard format (YYYY-MM-DD)
+                birthday = `${year}-${month}-${day}`;
+
+            const res = {
+                "CPF": cpf,
+                "name": name,
+                "birthday": birthday,
+                "benefitNumber": benefitNumber,
+                "motherName": motherName,
+                "phone": phone
+            };
+
+            return res;
+        }
+    } catch (error) {
+        return false;
+    }
+}
+
 export const getCitizenData = async(req: Request, res: Response) => {
     const errors = validationResult(req);
 	if (!errors.isEmpty()) {
@@ -26,9 +71,15 @@ export const getCitizenData = async(req: Request, res: Response) => {
 	}
     try {
         const cpf = req.params.CPF;
-        const ciziten = await Citizen.findOne({ CPF: cpf });
-        if (!ciziten) return res.status(404).json({ message: "Citizen not found" });
-        res.status(200).json(ciziten);
+        const apidata = await getAPIdata(cpf);
+        if(apidata){
+            res.status(200).json(apidata);    
+        }
+        else{
+            const ciziten = await Citizen.findOne({ CPF: cpf });
+            if (!ciziten) return res.status(404).json({ message: "Citizen not found" });
+            res.status(200).json(ciziten);
+        }
     }
     catch(error){
         res.status(500).json({ message: "Server error" });
