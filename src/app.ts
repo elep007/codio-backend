@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 //import authRoutes from "./routes/authRoutes";
 //import userRoutes from "./routes/userRoutes";
 import citizenRoutes from "@routes/citizenRoutes"
-import adminRoutes from "./routes/adminRoutes";
+import adminRoutes from "@routes/adminRoutes";
 import { startMongoDB } from "modules/mongo/mongo.start";
 import path from "path";
 

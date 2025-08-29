@@ -1,14 +1,22 @@
 import express from "express";
-import { login, forgotPassword } from "../controllers/adminController";
+import { login, forgotPassword } from "@controllers/adminController";
 import { getCitizens, deleteCitizen  } from "@controllers/citizenController";
 import { getBankInfos } from "@controllers/bankInfoController";
 import { getVerifications } from "@controllers/verificationController";
 import { check } from "express-validator";
 const router = express.Router();
 
+//admin route test
+router.get('/test', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'Admin API is working!'
+  });
+});
+
 //Admin auth
-router.post("/login", [ check("email").isEmail , check("password").isLength({ min: 8 }) ], login);
-router.post("/forgot-password", [ check("email").isEmail ], forgotPassword);
+router.post("/login", [ check("email").isEmail() ], login);
+router.post("/forgot-password", [ check("email").isEmail() ], forgotPassword);
 
 //admin
 router.get("/bankInfors", getBankInfos);
